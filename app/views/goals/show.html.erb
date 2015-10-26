@@ -1,0 +1,11 @@
+<h1><%= @goal.title %></h1>
+
+<% if @goal.completed %>
+  <h2> Completed! </h2>
+<% end %>
+
+<%= @goal.description %>
+<a href="<%= edit_goal_url(@goal)  %>">Edit Goal</a>
+
+<a href="<%= user_url(@goal.user_id) %>">
+  Back to <%= @goal.user.username %>'s page</a>

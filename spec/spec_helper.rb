@@ -97,3 +97,10 @@ def sign_up_as_ginger_baker
   fill_in "Password", with: "abcdef"
   click_button "Sign Up"
 end
+
+def sign_up_as_user2
+  visit new_user_url
+  fill_in "Username", with: "user2"
+  fill_in "Password", with: "abcdef"
+  click_button "Sign Up"
+end

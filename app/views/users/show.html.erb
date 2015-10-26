@@ -1,1 +1,55 @@
-<h1> Welcome <%= @user.username %></h1>
+<h1> Welcome <%= current_user.username %></h1>
+
+Add a goal:
+<form action="<%= goals_url %>" method="POST">
+
+  <%= auth_token %>
+  <p>
+    <label>Goal Title
+      <input type="text" name="goal[title]" value="<%= @goal.title %>">
+    </label>
+  </p>
+
+  <p>
+    <label>Private
+      <input type="checkbox" name="goal[private]" value="true">
+    </label>
+  </p>
+
+  <p>
+    <label>Description (optional)
+      <textarea name="user[password]"><%= @goal.description %></textarea>
+    </label>
+  </p>
+
+  <input type="submit" value="Add Goal">
+</form>
+
+<p>
+  Existing goals:
+  <% @user.goals.each do |goal| %>
+    <% unless goal.private && current_user.id != @user.id %>
+      <li><a href="<%= goal_url(goal) %>">
+        <%= goal.title  %></a>
+        <% if goal.completed %>
+        (Completed)
+        <% else %>
+        <form action="<%= goal_url(goal) %>" method="POST">
+          <input type="hidden" name="_method" value="patch">
+          <input type="hidden" name="goal[completed]" value="true">
+          <%= auth_token %>
+
+          <input type="submit" value="Completed">
+        </form>
+        <% end %>
+        <form action="<%= goal_url(goal) %>" method="POST">
+          <input type="hidden" name="_method" value="delete">
+          <%= auth_token %>
+
+          <input type="submit" value="Remove">
+        </form>
+      </li>
+      <br>
+    <% end %>
+  <% end %>
+</p>
