@@ -50,7 +50,7 @@ Add a Comment:
         <%= goal.title  %></a>
         <% if goal.completed %>
         (Completed)
-        <% else %>
+        <% elsif current_user.id == @user.id %>
         <form action="<%= goal_url(goal) %>" method="POST">
           <input type="hidden" name="_method" value="patch">
           <input type="hidden" name="goal[completed]" value="true">

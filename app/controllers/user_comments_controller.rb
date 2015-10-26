@@ -17,5 +17,4 @@ private
   def user_comment_params
     params.require(:comment).permit(:body, :profile_id)
   end
-
 end

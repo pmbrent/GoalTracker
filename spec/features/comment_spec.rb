@@ -35,9 +35,31 @@ feature "add comment on goal" do
 end
 
 feature "remove comment from user" do
-
+  it "should remove an existing comment" do
+    sign_up_as_ginger_baker
+    click_button "Sign Out"
+    sign_up_as_user2
+    visit "/users/1"
+    fill_in "Comment", with: "You can do it!"
+    click_button "Add Comment"
+    click_button "Remove Comment"
+    expect(page).to_not have_content("You can do it!")
+  end
 end
 
 feature "remove comment from goal" do
-
+  it "should remove an existing comment" do
+    sign_up_as_ginger_baker
+    visit "/users/1"
+    fill_in "Goal Title", with: "learn capybara"
+    click_button "Add Goal"
+    click_button "Sign Out"
+    sign_up_as_user2
+    visit "/users/1"
+    click_link "learn capybara"
+    fill_in "Comment", with: "You can do it!"
+    click_button "Add Comment"
+    click_button "Remove Comment"
+    expect(page).to_not have_content("You can do it!")
+  end
 end

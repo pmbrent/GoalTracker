@@ -7,5 +7,40 @@
 <%= @goal.description %>
 <a href="<%= edit_goal_url(@goal)  %>">Edit Goal</a>
 
+<% unless current_user.id == @goal.user_id %>
+Add a Comment:
+<form action="<%= goal_comments_url %>" method="POST">
+
+  <%= auth_token %>
+  <p>
+    <label>Comment
+      <input type="text" name="comment[body]">
+    </label>
+  </p>
+
+  <input type="hidden" name="comment[goal_id]" value="<%= @goal.id %>">
+
+  <input type="submit" value="Add Comment">
+</form>
+<% end %>
+
+<p>
+  Comments:
+  <% @goal.comments.each do |comment| %>
+      <li>
+        <%= comment.body %>
+        <% if (current_user.id == comment.author_id) || (current_user.id == goal.user_id) %>
+        <form action="<%= goal_comment_url(comment) %>" method="POST">
+          <input type="hidden" name="_method" value="delete">
+          <%= auth_token %>
+
+          <input type="submit" value="Remove Comment">
+        </form>
+        <% end %>
+      </li>
+      <br>
+  <% end %>
+</p>
+
 <a href="<%= user_url(@goal.user_id) %>">
   Back to <%= @goal.user.username %>'s page</a>
