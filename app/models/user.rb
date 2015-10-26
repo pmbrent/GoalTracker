@@ -6,6 +6,16 @@ class User < ActiveRecord::Base
 
   has_many :goals
 
+  has_many(:authored_comments,
+  class_name: "UserComment",
+  foreign_key: :author_id,
+  primary_key: :id)
+
+  has_many(:profile_comments,
+  class_name: "UserComment",
+  foreign_key: :profile_id,
+  primary_key: :id)
+
   attr_reader :password
 
   def self.find_by_credentials(username, password)

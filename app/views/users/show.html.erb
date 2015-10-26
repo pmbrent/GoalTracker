@@ -1,5 +1,6 @@
-<h1> Welcome <%= current_user.username %></h1>
+<h1> Welcome to <%= @user.username %>'s page</h1>
 
+<% if current_user.id == @user.id %>
 Add a goal:
 <form action="<%= goals_url %>" method="POST">
 
@@ -24,6 +25,22 @@ Add a goal:
 
   <input type="submit" value="Add Goal">
 </form>
+<% else %>
+Add a Comment:
+<form action="<%= user_comments_url %>" method="POST">
+
+  <%= auth_token %>
+  <p>
+    <label>Comment
+      <input type="text" name="comment[body]">
+    </label>
+  </p>
+
+  <input type="hidden" name="comment[profile_id]" value="<%= @user.id %>">
+
+  <input type="submit" value="Add Comment">
+</form>
+<% end %>
 
 <p>
   Existing goals:
@@ -51,5 +68,23 @@ Add a goal:
       </li>
       <br>
     <% end %>
+  <% end %>
+</p>
+
+<p>
+  Comments:
+  <% @user.profile_comments.each do |comment| %>
+      <li>
+        <%= comment.body  %>
+        <% if (current_user.id == comment.author_id) || (current_user.id == comment.profile_id) %>
+        <form action="<%= user_comment_url(comment) %>" method="POST">
+          <input type="hidden" name="_method" value="delete">
+          <%= auth_token %>
+
+          <input type="submit" value="Remove Comment">
+        </form>
+        <% end %>
+      </li>
+      <br>
   <% end %>
 </p>
