@@ -12,10 +12,7 @@ feature "the signup process" do
   feature "signing up a user" do
 
     it "shows username on the homepage after signup" do
-      visit "/users/new"
-      fill_in "Username", with: "ginger_baker"
-      fill_in "Password", with: "abcdef"
-      click_button "Sign Up"
+      sign_up_as_ginger_baker
       expect(page).to have_content "ginger_baker"
 
     end
@@ -27,6 +24,7 @@ end
 feature "logging in" do
 
   it "shows username on the homepage after signin" do
+    sign_in_as_ginger_baker
 
     visit "/session/new"
     fill_in "Username", with: "ginger_baker"
@@ -40,8 +38,17 @@ end
 
 feature "logging out" do
 
-  it "begins with logged out state"
+  it "begins with logged out state" do
+    sign_up_as_ginger_baker
+    click_button "Sign Out"
+    visit "/users/1"
+    expect(page).to have_content "Sign In"
+  end
 
-  it "doesn't show username on the homepage after logout"
+  it "doesn't show username on the homepage after logout" do
+    sign_up_as_ginger_baker
+    click_button "Sign Out"
+    expect(page).to_not have_content("ginger_baker")
+  end
 
 end

@@ -53,6 +53,8 @@ group :development do
   gem 'guard-rspec'
 
   gem 'factory_girl_rails'
+
+  gem 'pry-rails'
 end
 
 group :test do
